@@ -125,5 +125,18 @@
     if (k) return unlock(k).catch(function () { store(null); askPassword(); });
     askPassword();
   }
+  /* auto-update: compare this page's version with the published one, reload into the new version */
+  function checkUpdate() {
+    var mine = (document.querySelector('meta[name="kap-version"]') || {}).content; if (!mine) return;
+    fetch("index.html?check=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; }).then(function (t) {
+      var m = /name="kap-version" content="([^"]+)"/.exec(t); if (!m || m[1] === mine) return;
+      var tried = ""; try { tried = sessionStorage.getItem("kap_upd") || ""; } catch (e) {}
+      if (tried === m[1]) return;
+      try { sessionStorage.setItem("kap_upd", m[1]); } catch (e) {}
+      location.replace(location.pathname + "?v=" + m[1] + location.hash);
+    }).catch(function () {});
+  }
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) checkUpdate(); });
+  setTimeout(checkUpdate, 1500);
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();
