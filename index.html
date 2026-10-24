@@ -52,7 +52,7 @@ img{display:block;max-width:100%}
 .wrap{max-width:600px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:calc(8px + env(safe-area-inset-top,0px)) calc(112px + env(safe-area-inset-bottom,0px))}
 
 /* liquid glass material */
-.glass,nav.tabs .in,.nb .back,.nb .act,.media .nav,.heart,.rotbtn,.toast{
+.glass,nav.tabs .in,nav.tabs .fab,.nb .back,.nb .act,.media .nav,.heart,.rotbtn,.toast{
   background:var(--glass);-webkit-backdrop-filter:blur(22px) saturate(190%);backdrop-filter:blur(22px) saturate(190%);
   box-shadow:inset 0 1px 0 var(--glass-hi),inset 0 0 0 .5px var(--glass-edge),var(--glass-sh)}
 
@@ -156,7 +156,11 @@ textarea.field{width:100%;border:0;background:transparent;outline:none;font-size
 
 /* floating glass tab bar */
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:25;pointer-events:none;padding:0 max(14px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));background:linear-gradient(to top,color-mix(in srgb,var(--bg) 70%,transparent),transparent)}
-nav.tabs .in{pointer-events:auto;max-width:440px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);border-radius:999px;padding:5px}
+nav.tabs .bar{max-width:520px;margin:0 auto;display:flex;gap:10px;align-items:center}
+nav.tabs .fab{pointer-events:auto;flex:none;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;color:var(--accent)}
+nav.tabs .fab svg{width:30px;height:30px}
+nav.tabs .fab:active{transform:scale(.94)}
+nav.tabs .in{pointer-events:auto;flex:1;min-width:0;display:grid;grid-template-columns:repeat(5,1fr);border-radius:999px;padding:5px}
 nav.tabs button{min-height:54px;border-radius:999px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;font-weight:600;letter-spacing:.1px;color:var(--fg);transition:background .25s,color .25s}
 nav.tabs svg{width:24px;height:24px}
 nav.tabs button[aria-current="page"]{color:var(--accent);background:var(--fill)}
@@ -200,6 +204,71 @@ nav.tabs button[aria-current="page"]{color:var(--accent);background:var(--fill)}
   @keyframes fr{from{transform:translateX(40px);opacity:.4}}@keyframes fl{from{transform:translateX(-40px);opacity:.4}}
   .toast:not([hidden]){animation:pop .3s cubic-bezier(.3,1.5,.5,1)}@keyframes pop{from{transform:translateX(-50%) scale(.85);opacity:0}}
 }
+/* my day */
+.hours{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;background:var(--surface);border-radius:var(--r);padding:12px 10px;margin-top:-2px}
+.hours::-webkit-scrollbar{display:none}
+.hr{flex:none;width:46px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;border-radius:14px;font-variant-numeric:tabular-nums}
+.hr .hh{font-size:12px;color:var(--fg2);font-weight:500}
+.hr .ic{font-size:17px;line-height:20px}
+.hr .pp{font-size:11px;color:var(--accent);font-weight:600;min-height:13px}
+.hr .tt{font-size:15px;font-weight:600}
+.hr.out{background:var(--fill)}
+.hr.now .hh{color:var(--fg)}
+.row.ev .tm{width:52px;flex:none;font-weight:600;font-size:15px;display:flex;flex-direction:column;line-height:1.2;align-self:flex-start}
+.row.ev .tm small{font-weight:400;color:var(--fg2);font-size:13px}
+.row .x{flex:none;width:30px;height:30px;border-radius:50%;color:var(--fg2);font-size:20px;line-height:1;opacity:.6}
+.row.chk{gap:14px}
+.cb{flex:none;width:24px;height:24px;border-radius:50%;border:1.8px solid var(--fg2);opacity:.75;display:grid;place-items:center;transition:background .2s,border-color .2s}
+.cb[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);opacity:1}
+.cb[aria-pressed="true"]::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.2px 2.2px 0;transform:translateY(-1px) rotate(45deg)}
+.cb.add{border-style:dashed;color:var(--fg2);font-size:16px;line-height:1}
+.grow.done{color:var(--fg2);text-decoration:line-through;text-decoration-color:var(--sep)}
+.btn.sm2{min-height:44px;font-size:15px}
+.link.center{align-self:center;font-size:15px}
+.foot.pad{padding-inline:16px}
+.ico.warn{width:22px;height:22px;border-radius:50%;background:rgba(255,149,0,.16);color:#FF9500;display:grid;place-items:center;font-weight:700;font-size:13px}
+.ico.okc{width:22px;height:22px;border-radius:50%;background:rgba(52,199,89,.16);color:#34C759;display:grid;place-items:center;font-weight:700;font-size:13px}
+.ico svg{width:22px;height:22px;display:block}
+.big{font:700 22px/28px var(--fd)}
+input.field.tr{text-align:right;width:auto;min-width:130px;color:var(--accent)}
+.tdays{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tday{background:var(--surface);border-radius:var(--r2);overflow:hidden}
+.tday img{width:100%;aspect-ratio:3/4;object-fit:cover;background:var(--mat)}
+.tday .meta{padding:8px 12px 10px;display:flex;flex-direction:column}
+.tday .name{font-weight:600;font-size:14px}.tday .note{font-size:12px;color:var(--fg2)}
+/* chat */
+.chatsheet .body{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.chat{display:flex;flex-direction:column;gap:10px;min-height:50vh}
+.hello{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding:24px 4px}
+.logo.sm{width:56px;height:56px;border-radius:17px;background:linear-gradient(145deg,#8E8CF0,#5856D6);color:#fff;display:grid;place-items:center}
+.logo.sm svg{width:30px;height:30px}
+.chips.center{justify-content:center}
+.msg{display:flex;flex-direction:column;gap:6px;max-width:86%}
+.msg.me{align-self:flex-end;align-items:flex-end}
+.msg.ai{align-self:flex-start}
+.msg img{max-width:180px;border-radius:16px}
+.bub{padding:10px 14px;border-radius:20px;font-size:16px;line-height:1.38;letter-spacing:-.2px;word-wrap:break-word}
+.msg.me .bub{background:var(--accent);color:var(--accent-fg);border-bottom-right-radius:6px}
+.msg.ai .bub{background:var(--surface);border-bottom-left-radius:6px}
+.bub p{margin:0 0 8px}.bub p:last-child{margin:0}
+.bub ul{margin:4px 0 8px;padding-left:18px}.bub li{margin:3px 0}
+.ichip{display:inline-flex;vertical-align:middle;margin:0 2px}
+.ichip .thumb{width:34px;height:34px;border-radius:9px}.ichip .thumb img{width:30px;height:30px}
+.dots3{display:inline-flex;gap:4px;padding:4px 0}
+.dots3 i{width:7px;height:7px;border-radius:50%;background:var(--fg2);animation:blink 1.2s infinite}
+.dots3 i:nth-child(2){animation-delay:.2s}.dots3 i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.composer{position:fixed;left:0;right:0;bottom:0;z-index:6;display:flex;align-items:flex-end;gap:8px;flex-wrap:wrap;padding:8px max(12px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));background:linear-gradient(to top,var(--bg) 70%,transparent)}
+.composer textarea{flex:1;min-width:0;resize:none;border:0;outline:none;border-radius:22px;padding:11px 16px;font:inherit;font-size:16px;line-height:22px;max-height:140px;background:var(--surface);color:var(--fg);box-shadow:inset 0 0 0 .5px var(--sep)}
+.composer .send,.composer .attach{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center}
+.composer .send{background:var(--accent);color:var(--accent-fg)}
+.composer .send:disabled{opacity:.4}
+.composer .send svg{width:22px;height:22px}
+.composer .attach{background:var(--fill);color:var(--fg2)}.composer .attach svg{width:22px;height:22px}
+.composer .att{width:100%;display:flex;align-items:center;gap:8px}
+.composer .att img{width:56px;height:56px;object-fit:cover;border-radius:12px}
+.composer .att button{width:28px;height:28px;border-radius:50%;background:var(--fill);font-size:18px}
+.chatsheet .composer{max-width:600px;margin:0 auto}
 /* login */
 body.locked nav.tabs{display:none}
 .login{min-height:calc(100dvh - 40px);display:flex;flex-direction:column;justify-content:center;gap:14px;max-width:380px;margin:0 auto;text-align:center}
@@ -212,7 +281,7 @@ body.locked nav.tabs{display:none}
 </style>
 
 <div class="wrap" id="app"></div>
-<nav class="tabs" aria-label="Разделы"><div class="in" id="tabs"></div></nav>
+<nav class="tabs" aria-label="Разделы"><div class="bar"><div class="in" id="tabs"></div><button type="button" class="fab" data-act="chat" aria-label="Ассистент"></button></div></nav>
 <div id="sheet"></div>
 <div id="toast" class="toast" role="status" hidden></div>
 
