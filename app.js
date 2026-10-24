@@ -226,7 +226,10 @@
     String(text || "").split(/\r?\n|;;/).forEach(function (line) {
       line = line.trim(); if (!line) return;
       var p = line.split("|").map(function (s) { return s.trim(); });
-      if (p.length >= 3 && hm(p[0]) != null) { out.push({ s: fmtH(hm(p[0])), e: hm(p[1]) != null ? fmtH(hm(p[1])) : "", t: p[2], loc: p[3] || "" }); return; }
+      if (p.length >= 3 && hm(p[0]) != null) {
+        var s0 = hm(p[0]), e0 = hm(p[1]), allDay = s0 === 0 && (e0 === 0 || e0 === 1439 || e0 == null);
+        out.push({ s: allDay ? "" : fmtH(s0), e: allDay || e0 == null ? "" : fmtH(e0), t: p[2] || "Событие", loc: p[3] || "" }); return;
+      }
       if (p.length >= 2 && /весь день|all.?day/i.test(p[0])) { out.push({ s: "", e: "", t: p[1], loc: p[2] || "" }); return; }
       var m = /^(\d{1,2}[:.]\d{2})(?:\s*[-–—]\s*(\d{1,2}[:.]\d{2}))?\s*[|·,:-]?\s*(.+)$/.exec(line);
       if (m) out.push({ s: fmtH(hm(m[1])), e: m[2] ? fmtH(hm(m[2])) : "", t: m[3], loc: "" });
