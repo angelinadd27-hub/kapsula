@@ -828,15 +828,19 @@
     gear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
     camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.5-2h6l1.5 2h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="13" r="3.5"/></svg>',
     send: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5a1 1 0 0 1 .7.3l6 6a1 1 0 1 1-1.4 1.4L13 7.9V19a1 1 0 1 1-2 0V7.9l-4.3 4.3a1 1 0 1 1-1.4-1.4l6-6a1 1 0 0 1 .7-.3z"/></svg>',
+    plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
     trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4.5 7h15M9.5 7V5h5v2M6.5 7l1 12.5h9l1-12.5M10 10.5v6M14 10.5v6"/></svg>',
     rotR: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4v5h-5"/><path d="M19.4 14a8 8 0 1 1-1.9-8.3L20 9"/></svg>'
   };
-  var TABS = [["today", "Сегодня"], ["looks", "Образы"], ["build", "Собрать"], ["wardrobe", "Гардероб"], ["mine", "Мои"]];
+  var TABS = [["today", "Сегодня"], ["looks", "Образы"], ["wardrobe", "Гардероб"], ["mine", "Мои"]];
   function renderTabs() {
     var fab = document.querySelector("nav.tabs .fab"); if (fab && !fab.firstChild) fab.innerHTML = IC.chat;
-    $("#tabs").innerHTML = TABS.map(function (t) { return '<button type="button" data-tab="' + t[0] + '"' + (S.tab === t[0] ? ' aria-current="page"' : "") + ">" + IC[t[0]] + "<span>" + t[1] + "</span></button>"; }).join("");
+    $("#tabs").innerHTML = TABS.map(function (t) { return '<button type="button" data-tab="' + t[0] + '"' + (S.tab === t[0] || (S.tab === "build" && t[0] === "looks") ? ' aria-current="page"' : "") + ">" + IC[t[0]] + "<span>" + t[1] + "</span></button>"; }).join("");
   }
-  function lt(eyebrow, title, sub) { return '<header class="lt">' + (eyebrow ? '<div class="eyebrow">' + esc(eyebrow) + "</div>" : "") + "<h1>" + esc(title) + "</h1>" + (sub ? '<div class="sub">' + sub + "</div>" : "") + "</header>"; }
+  function lt(eyebrow, title, sub, action, back) {
+    return '<header class="lt' + (action ? " act" : "") + '">' + (back ? '<button type="button" class="ltback" data-tab="' + back[0] + '">' + IC.back + back[1] + "</button>" : "") +
+      '<div class="ltt">' + (eyebrow ? '<div class="eyebrow">' + esc(eyebrow) + "</div>" : "") + "<h1>" + esc(title) + "</h1>" + (sub ? '<div class="sub">' + sub + "</div>" : "") + "</div>" + (action || "") + "</header>";
+  }
   function sec(head, body, right) { return '<section class="sec">' + (head ? '<h2 class="sh">' + esc(head) + (right ? "<b>" + right + "</b>" : "") + "</h2>" : "") + body + "</section>"; }
   function lookImg(l, mode) {
     if (l.custom) return mode === "b" ? "" : (photos["sk_" + l.key] || "");
@@ -893,7 +897,7 @@
     var ts = [["all", "Любая"], ["cold", "Холод"], ["mid", "0…+8°"], ["warm", "+3…+10°"]];
     var src = D.looks.concat(S.my), list = src.filter(function (l) { return (S.fDir === "all" || l.dir === S.fDir) && (S.fT === "all" || l.custom || tband(l) === S.fT); });
     var cx = ctxList("looks", list.map(function (l) { return l.key; }));
-    return lt("", "Образы", list.length + " " + plural(list.length, "образ", "образа", "образов")) +
+    return lt("", "Образы", list.length + " " + plural(list.length, "образ", "образа", "образов"), '<button type="button" class="ltbtn" data-tab="build" aria-label="Собрать новый образ">' + IC.plus + "</button>") +
       sec("", '<div class="chips">' + dirs.map(function (d) { return '<button type="button" class="chip" data-fdir="' + d[0] + '" aria-pressed="' + (S.fDir === d[0]) + '">' + d[1] + "</button>"; }).join("") + "</div>" +
         '<div class="seg" role="group" aria-label="Погода">' + ts.map(function (d) { return '<button type="button" data-ft="' + d[0] + '" aria-pressed="' + (S.fT === d[0]) + '">' + d[1] + "</button>"; }).join("") + "</div>") +
       sec("", list.length ? '<div class="masonry">' + list.map(function (l) { return card(l, cx, { tall: l.sk || l.custom }); }).join("") + "</div>" : '<div class="empty">Под такой фильтр образов нет.</div>');
@@ -918,7 +922,7 @@
       var x = b[s[0]] && ITEM[b[s[0]]];
       return '<button type="button" class="row th" data-slot="' + s[0] + '"><span class="thumb' + (x && (x.photo || x.card) ? " card" : "") + '">' + (x ? itemImg(x) : "") + '</span><span class="grow"><span class="small">' + s[1] + "</span><span>" + (x ? esc(x.name) : '<span class="v">Не выбрано</span>') + '</span></span><span class="chev">›</span></button>';
     }).join("");
-    return lt(sgn(c.t) + "°" + (c.rain ? " · дождь" : ""), "Собрать образ") +
+    return lt(sgn(c.t) + "°" + (c.rain ? " · дождь" : ""), "Собрать образ", "", "", ["looks", "Образы"]) +
       sec("", '<div class="media"><img id="buildimg" alt="Доска собранного образа"></div>' +
         '<div class="pair"><button type="button" class="btn tint" data-act="gen">' + IC.spark + 'Другой</button><button type="button" class="btn gray" data-act="clear">Очистить</button></div>') +
       sec("Вещи", '<div class="group">' + rows + "</div>") +

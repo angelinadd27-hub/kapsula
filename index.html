@@ -204,6 +204,13 @@ nav.tabs button[aria-current="page"]{color:var(--accent);background:var(--fill)}
   @keyframes fr{from{transform:translateX(40px);opacity:.4}}@keyframes fl{from{transform:translateX(-40px);opacity:.4}}
   .toast:not([hidden]){animation:pop .3s cubic-bezier(.3,1.5,.5,1)}@keyframes pop{from{transform:translateX(-50%) scale(.85);opacity:0}}
 }
+/* large title with action */
+.lt.act{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.lt .ltt{min-width:0;flex:1}
+.ltbtn{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--accent-fg);background:var(--accent);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 6px 16px color-mix(in srgb,var(--accent) 30%,transparent);margin-bottom:4px}
+.ltbtn svg{width:22px;height:22px}.ltbtn:active{transform:scale(.94)}
+.ltback{display:inline-flex;align-items:center;gap:4px;color:var(--accent);font-size:17px;min-height:36px;margin:0 0 2px -4px}
+.ltback svg{width:10px;height:17px}
 /* my day */
 .hours{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;background:var(--surface);border-radius:var(--r);padding:12px 10px;margin-top:-2px}
 .hours::-webkit-scrollbar{display:none}
