@@ -160,7 +160,7 @@ nav.tabs .bar{max-width:520px;margin:0 auto;display:flex;gap:10px;align-items:ce
 nav.tabs .fab{pointer-events:auto;flex:none;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;color:var(--accent)}
 nav.tabs .fab svg{width:30px;height:30px}
 nav.tabs .fab:active{transform:scale(.94)}
-nav.tabs .in{pointer-events:auto;flex:1;min-width:0;display:grid;grid-template-columns:repeat(5,1fr);border-radius:999px;padding:5px}
+nav.tabs .in{pointer-events:auto;flex:1;min-width:0;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border-radius:999px;padding:5px}
 nav.tabs button{min-height:54px;border-radius:999px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;font-weight:600;letter-spacing:.1px;color:var(--fg);transition:background .25s,color .25s}
 nav.tabs svg{width:24px;height:24px}
 nav.tabs button[aria-current="page"]{color:var(--accent);background:var(--fill)}
